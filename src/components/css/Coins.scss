@@ -1,0 +1,31 @@
+@import "./variables.scss";
+
+table {
+  text-align: center;
+  width:80%;
+  margin: 0 auto;
+  border: 2px solid $border-color;
+  background-color: $background-color1;
+}
+table td {
+  border-top: 1px solid $border-color;
+  width: 40px;
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+table tr {
+  width: 500px;
+  // border-top: 1px solid $border-color;
+}
+table th {
+  border-bottom: 2px solid $border-color;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+table a:hover{
+  text-shadow: 5px 2px 10px $text-secondary;
+}
+table tbody tr:hover{
+  background-color: $background-color2;
+}
