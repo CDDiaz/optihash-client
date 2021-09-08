@@ -12,6 +12,7 @@ import Home from './Home';
 import Login from './registrations/Login';
 import Signup from './registrations/Signup';
 import Coins from './Coins';
+import Cards from './Cards';
 
 // const SERVERURL = 'https://.herokuapp.com';
 const SERVERURL = 'http://localhost:3001';
@@ -81,7 +82,7 @@ class App extends Component {
              </li>
 
              <li>
-              <Link to="/coins"> GPU Mining </Link>
+              <Link to="/cards"> GPU Mining </Link>
              </li>
 
              <li>
@@ -123,6 +124,9 @@ class App extends Component {
             </Route >
             <Route path='/coins'>
               <Coins />
+            </Route >
+            <Route path='/cards'>
+              <Cards />
             </Route >
           </Switch>
         </Router>

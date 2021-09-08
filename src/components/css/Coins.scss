@@ -2,10 +2,11 @@
 
 table {
   text-align: center;
-  width:80%;
+  width:90%;
   margin: 0 auto;
   border: 2px solid $border-color;
   background-color: $background-color1;
+  border-collapse: collapse;
 }
 table td {
   border-top: 1px solid $border-color;
@@ -19,7 +20,7 @@ table tr {
   // border-top: 1px solid $border-color;
 }
 table th {
-  border-bottom: 2px solid $border-color;
+  border-bottom: 5px solid $border-color;
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
@@ -28,4 +29,11 @@ table a:hover{
 }
 table tbody tr:hover{
   background-color: $background-color2;
+}
+
+.red {
+  color: red;
+}
+.green {
+  color: $accent-color3;
 }

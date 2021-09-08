@@ -11,7 +11,7 @@ class Coins extends Component {
     super();
     this.state = {
       coins: [],
-      exchange: ''
+      usdToAud: ''
     }
     // bindings here
   };
@@ -24,8 +24,8 @@ class Coins extends Component {
 
     axios.get('https://api.frankfurter.app/latest?amount=1&from=USD&to=AUD').then((result) =>
     {
-      console.log("Exchange", result.data.rates.AUD);
-      this.setState({ exchange: result.data.rates.AUD });
+      console.log("USD to AUD", result.data.rates.AUD);
+      this.setState({ usdToAud: result.data.rates.AUD });
     });
   };
 
@@ -57,7 +57,7 @@ class Coins extends Component {
                   <td>{data.coin}</td>
                   <td>{data.algorithm}</td>
                   <td>$ {data.price.toFixed(2)}</td>
-                  <td>$ {(data.price*this.state.exchange).toFixed(2)}</td>
+                  <td>$ {(data.price*this.state.usdToAud).toFixed(2)}</td>
                 </tr>
               );
             })}
