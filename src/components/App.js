@@ -15,6 +15,7 @@ import Coins from './Coins';
 import Coin from './Coin';
 import Cards from './Cards';
 import Cardsbackup from './Cardsbackup';
+import Chart from './Chart';
 
 
 // const SERVERURL = 'https://.herokuapp.com';
@@ -88,7 +89,7 @@ class App extends Component {
               <Link to="/cards"> GPU Mining </Link>
              </li>
              <li>
-              <Link to="/cardsbackup"> GPU Mining2 </Link>
+              <Link to="/chart"> Chart </Link>
              </li>
 
              <li>
@@ -136,6 +137,9 @@ class App extends Component {
             </Route >
             <Route path='/cardsbackup'>
               <Cardsbackup />
+            </Route >
+            <Route path='/chart'>
+              <Chart />
             </Route >
 
             <Route
