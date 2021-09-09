@@ -14,8 +14,10 @@ import Signup from './registrations/Signup';
 import Coins from './Coins';
 import Coin from './Coin';
 import Cards from './Cards';
-import Cardsbackup from './Cardsbackup';
-import Chart from './Chart';
+import Card from './Card';
+
+
+
 
 
 // const SERVERURL = 'https://.herokuapp.com';
@@ -88,9 +90,7 @@ class App extends Component {
              <li>
               <Link to="/cards"> GPU Mining </Link>
              </li>
-             <li>
-              <Link to="/chart"> Chart </Link>
-             </li>
+
 
              <li>
                {!this.state.isLoggedIn ?
@@ -135,17 +135,17 @@ class App extends Component {
             <Route path='/cards'>
               <Cards />
             </Route >
-            <Route path='/cardsbackup'>
-              <Cardsbackup />
-            </Route >
-            <Route path='/chart'>
-              <Chart />
-            </Route >
+
 
             <Route
               exact
               path='/coin/:id'
               component={Coin}
+            />
+            <Route
+              exact
+              path='/card/:id'
+              component={Card}
             />
 
 

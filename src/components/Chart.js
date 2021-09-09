@@ -1,10 +1,10 @@
-import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useRef, useLayoutEffect } from 'react';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_dark from "@amcharts/amcharts4/themes/dark";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 
+am4core.useTheme(am4themes_dark);
 am4core.useTheme(am4themes_animated);
 
 function Chart(props) {
@@ -27,7 +27,7 @@ function Chart(props) {
       let series = x.series.push(new am4charts.LineSeries());
       series.dataFields.dateX = "date";
       series.dataFields.valueY = "value";
-      series.tooltipText = "${valueY.value}";
+      series.tooltipText = "$ {valueY.value}";
       x.cursor = new am4charts.XYCursor();
 
       let scrollbarX = new am4charts.XYChartScrollbar();
@@ -39,10 +39,9 @@ function Chart(props) {
       return () => {
         x.dispose();
       };
-
   }, []);
   return (
-    <div id="chartdiv" style={{ width: "80%", height: "400px" }}></div>
+    <div id="chartdiv"></div>
   );
 }
 export default Chart;

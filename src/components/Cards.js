@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './css/Coins.scss';
 
@@ -178,7 +179,17 @@ class Cards extends Component {
             { cards.map((k, i) => (
                 <tr key={i}>
                   <td className={`maker ${ k.gpu_maker === "NVIDIA" ? "green" : "red" }`}>{k.gpu_maker}</td>
-                  <td><a href={k.id}>{k.model}</a></td>
+                  <td>
+                  <Link
+                    to={{
+                      pathname: `/card/${k.id}`,
+                      state: { card: k, conversion: this.state.ethToAud }
+                    }}
+                  >
+                    <a href={k.id}>{k.model}</a>
+                  </Link>
+
+                  </td>
                   <td>{k.hashrate} Mh/s</td>
                   <td>{k.power} W</td>
                   <td>{k.efficiency} Mh/W</td>

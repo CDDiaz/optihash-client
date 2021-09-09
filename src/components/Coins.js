@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './css/Coins.scss';
 
-import Coin from './Coin';
-
 // const SERVERURL = 'https://.herokuapp.com';
 const SERVERURL = 'http://localhost:3001';
 
@@ -97,22 +95,22 @@ class Coins extends Component {
           </tr>
         </thead>
           <tbody>
-            { coins.filter(coin => coin.name.toLowerCase().includes(this.state.search) || coin.coin.toLowerCase().includes(this.state.search)).map((fileteredCoin, i) => (
+            { coins.filter(coin => coin.name.toLowerCase().includes(this.state.search) || coin.coin.toLowerCase().includes(this.state.search)).map((filteredCoin, i) => (
               <tr key={i}>
                 <td>
                   <Link
                     to={{
-                      pathname: `/coin/${fileteredCoin.coin}`,
-                      state: { coins: fileteredCoin, conversion: this.state.usdToAud }
+                      pathname: `/coin/${filteredCoin.coin}`,
+                      state: { coin: filteredCoin, conversion: this.state.usdToAud }
                     }}
                   >
-                    <a href={fileteredCoin.coin}>{fileteredCoin.name}</a>
+                    <a href={filteredCoin.coin}>{filteredCoin.name}</a>
                   </Link>
                 </td>
-                <td>{fileteredCoin.coin}</td>
-                <td>{fileteredCoin.algorithm}</td>
-                <td>$ {fileteredCoin.price.toFixed(2)}</td>
-                <td>$ {(fileteredCoin.price*this.state.usdToAud).toFixed(2)}</td>
+                <td>{filteredCoin.coin}</td>
+                <td>{filteredCoin.algorithm}</td>
+                <td>$ {filteredCoin.price.toFixed(2)}</td>
+                <td>$ {(filteredCoin.price*this.state.usdToAud).toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
@@ -126,5 +124,3 @@ class Coins extends Component {
 };
 
 export default Coins;
-
-        // <Coin coins={ this.state.coins } />
