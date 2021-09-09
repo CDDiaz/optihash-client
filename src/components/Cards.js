@@ -21,51 +21,71 @@ class Cards extends Component {
     this._handleSubmit = this._handleSubmit.bind(this);
     this.electricityInput = React.createRef();
     this.currencySelect = React.createRef();
+    this.fetchMiningEstimates = this.fetchMiningEstimates.bind(this);
   };
 
   componentDidMount() {
-    console.log("componentDidMount");
-    axios.get(SERVERURL+'/cards').then((response) => {
-      console.log("Response", response.data.cards);
-      this.setState({ cards: response.data.cards });
-    });
+    // console.log("componentDidMount");
+    const getCards = () => {
+      axios.get(SERVERURL+'/cards').then((response) => {
+        // console.log("Response", response.data.cards);
+        const newCards = response.data.cards.map(card => ({
+          ...card,
+          efficiency: this.getEfficiency(card.hashrate, card.power),
+          powerCost: this.electricityCost(card.power),
+          revenue: this.fetchMiningEstimates(card.hashrate),
+          profit: this.calculateProfit(this.fetchMiningEstimates(card.hashrate), this.electricityCost(card.power))
+        }))
+        this.setState({ cards: newCards });
+      });
+    }
 
-    axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=AUD').then((result) =>
+    const audPromise = axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=AUD').then((result) =>
     {
-      console.log("ETH to AUD", result.data.ethereum.aud);
+      // console.log("ETH to AUD", result.data.ethereum.aud);
       this.setState({ ethToAud: result.data.ethereum.aud});
-      this.setState({ currency: result.data.ethereum.aud});
+      if (this.state.currency === "") {
+        this.setState({currency: result.data.ethereum.aud});
+      };
     });
 
-    axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD').then((result) =>
+    const usdPromise = axios.get('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=USD').then((result) =>
     {
-      console.log("ETH to USD", result.data.ethereum.usd);
+      // console.log("ETH to USD", result.data.ethereum.usd);
       this.setState({ ethToUsd: result.data.ethereum.usd});
     });
 
-    axios.get(`https://api.minerstat.com/v2/coins?list=ETH`).then((result) =>
+    const rewardPromise = axios.get(`https://api.minerstat.com/v2/coins?list=ETH`).then((result) =>
     {
-      console.log("Mining Reward", result.data[0].reward);
+      // console.log("Mining Reward", result.data[0].reward);
       this.setState({ miningReward: result.data[0].reward});
     });
+    Promise.all([audPromise, usdPromise, rewardPromise]).then(getCards);
   };
 
   fetchMiningEstimates(hashrate) {
-    let gross = (1000000 * this.state.miningReward * hashrate * 24 * this.state.currency);
-    return gross;
-  }
+    let gross = (1000000 * this.state.miningReward * hashrate * 24 * this.state.currency).toFixed(2);
+    return Number(gross);
+  };
+
+  calculateProfit(revenue, cost) {
+    let profit = revenue - cost;
+    return Number(profit.toFixed(2));
+  };
 
   electricityCost(power) {
-    let cost = ((power*24)/1000)*this.state.electricity;
-    return cost;
-  }
+    let cost = (((power*24)/1000)*this.state.electricity).toFixed(2);
+    return Number(cost);
+  };
+
+  getEfficiency(hashrate, power) {
+    let efficiency = (hashrate/power).toFixed(3);
+    return Number(efficiency);
+  };
 
   _handleSubmit(event) {
     event.preventDefault();
-    console.log("_handleSubmit " + this.electricityInput.current.value);
     this.setState({electricity: Number(this.electricityInput.current.value)});
-
-    console.log("_handleSubmit " + this.currencySelect.current.value);
     this.setState({selectedCurrency: this.currencySelect.current.value});
 
     if (this.currencySelect.current.value === "aud") {
@@ -73,15 +93,46 @@ class Cards extends Component {
     } else {
       this.setState({currency: this.state.ethToUsd});
     };
-  }
+    this.componentDidMount();
+  };
+
+  compareByAsc(key) {
+    return function(a, b) {
+      if (a[key] < b[key]) return -1;
+      if (a[key] > b[key]) return 1;
+      return 0;
+    };
+  };
+
+  compareByDesc(key) {
+    return function(a, b) {
+      if (a[key] < b[key]) return 1;
+      if (a[key] > b[key]) return -1;
+      return 0;
+    };
+  };
+
+  sortBy(key) {
+    // console.log("SORT");
+    let arrayCopy = [...this.state.cards];
+    const arrInStr = JSON.stringify(arrayCopy);
+    arrayCopy.sort(this.compareByAsc(key));
+    const arrInStr1 = JSON.stringify(arrayCopy);
+    if (arrInStr === arrInStr1) {
+      arrayCopy.sort(this.compareByDesc(key));
+    }
+    this.setState({ cards: arrayCopy });
+  };
 
   render() {
-    const header = [ "GPU", "Model", "Hashrate", "Power", "Efficiency", "Cost / Day", "Revenue / Day", "Profit / Day"];
+    // console.log("RENDERING");
+    const { cards } = this.state;
+
     return (
       <div>
         <h2>Cards:</h2>
         <ul>
-          {this.state.cards.map(card => (
+          {cards.map(card => (
             <li key={card.id}>
             <a href={card.model}>{card.model}</a>
             </li>
@@ -112,27 +163,32 @@ class Cards extends Component {
 
         <table>
           <thead>
-            <tr>{header.map((h, i) => <th key={i}>{h}</th>)}</tr>
+            <tr>
+              <th onClick={() => this.sortBy("gpu_maker")}>GPU</th>
+              <th onClick={() => this.sortBy("model")}>Model</th>
+              <th onClick={() => this.sortBy("hashrate")}>Hashrate</th>
+              <th onClick={() => this.sortBy("power")}>Power</th>
+              <th onClick={() => this.sortBy("efficiency")}>Efficiency</th>
+              <th onClick={() => this.sortBy("powerCost")}>Cost / Day</th>
+              <th onClick={() => this.sortBy("revenue")}>Revenue / Day</th>
+              <th onClick={() => this.sortBy("profit")}>Profit / Day</th>
+            </tr>
           </thead>
           <tbody>
-            {Object.keys(this.state.cards).map((k, i) => {
-              let data = this.state.cards[k];
-              return (
+            { cards.map((k, i) => (
                 <tr key={i}>
-                  <td className={`maker ${ data.gpu_maker === "NVIDIA" ? "green" : "red" }`}>{data.gpu_maker}</td>
-                  <td><a href={data.id}>{data.model}</a></td>
-                  <td>{data.hashrate} Mh/s</td>
-                  <td>{data.power} W</td>
-                  <td>{(data.hashrate/data.power).toFixed(3)} Mh/W</td>
-                  <td>$ {(this.electricityCost(data.power)).toFixed(2)}</td>
-                  <td>$ {(this.fetchMiningEstimates(data.hashrate)).toFixed(2)}</td>
-                  <td>$ {(this.fetchMiningEstimates(data.hashrate)-this.electricityCost(data.power)).toFixed(2)}</td>
-
+                  <td className={`maker ${ k.gpu_maker === "NVIDIA" ? "green" : "red" }`}>{k.gpu_maker}</td>
+                  <td><a href={k.id}>{k.model}</a></td>
+                  <td>{k.hashrate} Mh/s</td>
+                  <td>{k.power} W</td>
+                  <td>{k.efficiency} Mh/W</td>
+                  <td>$ {k.powerCost}</td>
+                  <td>$ {k.revenue}</td>
+                  <td>$ {k.profit}</td>
                 </tr>
-              );
-            })}
-            </tbody>
-          </table>
+          ))}
+          </tbody>
+        </table>
 
       </div>
 
