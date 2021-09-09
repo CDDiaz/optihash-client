@@ -12,6 +12,7 @@ import Home from './Home';
 import Login from './registrations/Login';
 import Signup from './registrations/Signup';
 import Coins from './Coins';
+import Coin from './Coin';
 import Cards from './Cards';
 import Cardsbackup from './Cardsbackup';
 
@@ -136,6 +137,14 @@ class App extends Component {
             <Route path='/cardsbackup'>
               <Cardsbackup />
             </Route >
+
+            <Route
+              exact
+              path='/coin/:id'
+              component={Coin}
+            />
+
+
           </Switch>
         </Router>
       </div>

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './css/Coins.scss';
+
+import Coin from './Coin';
 
 // const SERVERURL = 'https://.herokuapp.com';
 const SERVERURL = 'http://localhost:3001';
@@ -96,7 +99,16 @@ class Coins extends Component {
           <tbody>
             { coins.filter(coin => coin.name.toLowerCase().includes(this.state.search) || coin.coin.toLowerCase().includes(this.state.search)).map((fileteredCoin, i) => (
               <tr key={i}>
-                <td><a href={fileteredCoin.coin}>{fileteredCoin.name}</a></td>
+                <td>
+                  <Link
+                    to={{
+                      pathname: `/coin/${fileteredCoin.coin}`,
+                      state: { coins: fileteredCoin, conversion: this.state.usdToAud }
+                    }}
+                  >
+                    <a href={fileteredCoin.coin}>{fileteredCoin.name}</a>
+                  </Link>
+                </td>
                 <td>{fileteredCoin.coin}</td>
                 <td>{fileteredCoin.algorithm}</td>
                 <td>$ {fileteredCoin.price.toFixed(2)}</td>
@@ -114,3 +126,5 @@ class Coins extends Component {
 };
 
 export default Coins;
+
+        // <Coin coins={ this.state.coins } />
