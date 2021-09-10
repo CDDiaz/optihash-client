@@ -18,14 +18,28 @@ const Coin = () => {
   }, []);
 
   return (
-    <div>
+    <div class="body-box">
     <h1>{ state.coin.name }</h1>
 
-      <div>
-        <div>{state.coin.coin}</div>
-        <div>{state.coin.algorithm}</div>
-        <div>USD $ {state.coin.price.toFixed(2)}</div>
-        <div>AUD $ {(state.coin.price*state.conversion).toFixed(2)}</div>
+      <div class="content-sc">
+        <div className="stat-container">
+          <div className="card-box">
+            <span className="stat-box">Coin Tag</span>
+            <span className="stat-box"><h2>{state.coin.coin}</h2></span>
+          </div>
+          <div className="card-box">
+            <span className="stat-box">Name</span>
+            <span className="stat-box"><h2>{state.coin.algorithm}</h2></span>
+          </div>
+          <div className="card-box">
+            <span className="stat-box">USD $</span>
+            <span className="stat-box"><h2>{state.coin.price.toFixed(2)}</h2></span>
+          </div>
+          <div className="card-box">
+            <span className="stat-box">AUD $</span>
+            <span className="stat-box"><h2>{(state.coin.price*state.conversion).toFixed(2)}</h2> </span>
+          </div>
+        </div>
       </div>
       <h2>Chart</h2>
       <div className="chart">

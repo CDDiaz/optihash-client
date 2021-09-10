@@ -69,8 +69,8 @@ class Coins extends Component {
     const { coins } = this.state;
 
     return (
-      <div>
-        <h2>Coins:</h2>
+      <div class="body-box">
+        <h2>Mineable Coins</h2>
         <ul>
           {coins.map(coin => (
             <li key={coin.id}>
@@ -79,7 +79,7 @@ class Coins extends Component {
           ))}
         </ul>
 
-        <h2>Coins Search:</h2>
+        <h2>Coin Search:</h2>
         <label>
           Search:
         </label>

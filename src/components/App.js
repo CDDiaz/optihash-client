@@ -71,86 +71,118 @@ class App extends Component {
     return (
       <div>
         <Router>
-          <nav>
-           <ul>
-             <li>
-             {this.state.isLoggedIn ?
-               <Link to="/create">Create</Link> :
-              null}
-             </li>
+          <nav class="navbar">
+            <div className="nav-content">
+              <div className = "title">
+               <h1><Link to="/">OptiHash</Link></h1>
+              </div>
 
-             <li>
-              <Link to="/"> Home </Link>
-             </li>
-
-             <li>
-              <Link to="/coins"> Coins </Link>
-             </li>
-
-             <li>
-              <Link to="/cards"> GPU Mining </Link>
-             </li>
-
-
-             <li>
-               {!this.state.isLoggedIn ?
-                 <Link to="/signup">Sign up</Link> :
+              <ul>
+                <li>
+                {this.state.isLoggedIn ?
+                  <Link to="/create">Create</Link> :
                  null}
-             </li>
+                </li>
 
-             <li>
-                {!this.state.isLoggedIn ? //shows if you aren't logged in
-                 <Link to="/login">Log in</Link> :
-                 <Link to="/logout" onClick={this.handleClick}>Log Out</Link>
-                }
-             </li>
-           </ul>
+                <li>
+                 <Link to="/"> Home </Link>
+                </li>
+
+                <li>
+                 <Link to="/coins"> Coins </Link>
+                </li>
+
+                <li>
+                 <Link to="/cards"> GPU Mining </Link>
+                </li>
+
+                <li>
+                  {!this.state.isLoggedIn ?
+                    <Link to="/signup">Sign up</Link> :
+                    null}
+                </li>
+
+                <li>
+                   {!this.state.isLoggedIn ? //shows if you aren't logged in
+                    <Link to="/login">Log in</Link> :
+                    <Link to="/logout" onClick={this.handleClick}>Log Out</Link>
+                   }
+                </li>
+              </ul>
+            </div>
           </nav>
-          <div className = "title">
-           <h2><Link to="/">OptiHash</Link></h2>
+
+          <div className="body-content">
+            <Switch>
+              <Route exact path='/' render={props => (
+                <Home {...props} handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn}/>
+                )}
+              />
+              <Route
+                exact path='/login'
+                render={props => (
+                <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
+                )}
+              />
+              <Route
+                exact path='/signup'
+                render={props => (
+                <Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
+                )}
+              />
+              <Route path='/logout'>
+                <Home />
+              </Route >
+              <Route path='/coins'>
+                <Coins />
+              </Route >
+              <Route path='/cards'>
+                <Cards />
+              </Route >
+
+
+              <Route
+                exact
+                path='/coin/:id'
+                component={Coin}
+              />
+              <Route
+                exact
+                path='/card/:id'
+                component={Card}
+              />
+
+
+            </Switch>
           </div>
-          <Switch>
-            <Route exact path='/' render={props => (
-              <Home {...props} handleLogout={this.handleLogout} loggedInStatus={this.state.isLoggedIn}/>
-              )}
-            />
-            <Route
-              exact path='/login'
-              render={props => (
-              <Login {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
-              )}
-            />
-            <Route
-              exact path='/signup'
-              render={props => (
-              <Signup {...props} handleLogin={this.handleLogin} loggedInStatus={this.state.isLoggedIn}/>
-              )}
-            />
-            <Route path='/logout'>
-              <Home />
-            </Route >
-            <Route path='/coins'>
-              <Coins />
-            </Route >
-            <Route path='/cards'>
-              <Cards />
-            </Route >
 
 
-            <Route
-              exact
-              path='/coin/:id'
-              component={Coin}
-            />
-            <Route
-              exact
-              path='/card/:id'
-              component={Card}
-            />
+          <div className="footer">
 
+            <div className="footer-content">
+              <ul>
+                <li>
+                 <Link to="/"> Home </Link>
+                </li>
 
-          </Switch>
+                <li>
+                 <Link to="/coins"> Coins </Link>
+                </li>
+
+                <li>
+                 <Link to="/cards"> GPU Mining </Link>
+                </li>
+
+                <li>Contact</li>
+
+              </ul>
+              <div>
+                <p>&copy; Copyright 2021</p>
+              </div>
+            </div>
+          </div>
         </Router>
+
       </div>
     );
   }

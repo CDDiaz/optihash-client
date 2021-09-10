@@ -130,17 +130,9 @@ class Cards extends Component {
     const { cards } = this.state;
 
     return (
-      <div>
-        <h2>Cards:</h2>
-        <ul>
-          {cards.map(card => (
-            <li key={card.id}>
-            <a href={card.model}>{card.model}</a>
-            </li>
-          ))}
-        </ul>
+      <div class="body-box">
 
-        <h2>Cards:</h2>
+        <h1>Graphics Cards</h1>
 
         <div>
           <form onSubmit={this._handleSubmit}>
@@ -156,8 +148,7 @@ class Cards extends Component {
               Electricity Cost per kWh:
             </label>
             <input type="text" defaultValue={this.state.electricity} ref={this.electricityInput}/>
-            <span>$/kWh</span>
-            <input type="submit" value="Set" />
+            <span>$/kWh </span>
             <button name="button" type="submit">Set</button>
           </form>
         </div>
