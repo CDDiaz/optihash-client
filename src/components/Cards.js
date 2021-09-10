@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './css/Coins.scss';
 
-// const SERVERURL = 'https://.herokuapp.com';
-const SERVERURL = 'http://localhost:3001';
+const SERVERURL = 'https://optihash-server.herokuapp.com';
+// const SERVERURL = 'http://localhost:3001';
 
 
 class Cards extends Component {

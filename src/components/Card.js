@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
-// const SERVERURL = 'https://.herokuapp.com';
-const SERVERURL = 'http://localhost:3001';
+const SERVERURL = 'https://optihash-server.herokuapp.com';
+// const SERVERURL = 'http://localhost:3001';
 
 const Card = () => {
   const { state } = useLocation();

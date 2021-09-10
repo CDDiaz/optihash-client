@@ -20,8 +20,8 @@ import Card from './Card';
 
 
 
-// const SERVERURL = 'https://.herokuapp.com';
-const SERVERURL = 'http://localhost:3001';
+const SERVERURL = 'https://optihash-server.herokuapp.com';
+// const SERVERURL = 'http://localhost:3001';
 
 class App extends Component {
   constructor(props) {
